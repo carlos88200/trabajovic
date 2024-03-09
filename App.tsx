@@ -1,20 +1,24 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Radio, RadioGroup, RadioIcon, RadioIndicator, RadioLabel, Button, ButtonText, Checkbox, CheckboxGroup, CheckboxIndicator, CheckboxIcon, CheckboxLabel, Textarea, TextareaInput, Select, SelectTrigger, SelectInput, SelectIcon, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, SelectItem, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Switch, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, HStack, Center, Icon, CircleIcon, CheckIcon, ChevronDownIcon } from '@gluestack-ui/themed';
+import { Button, ButtonText } from '@gluestack-ui/themed';
 import { config } from "./config/gluestack-ui.config";
-import { Box, GluestackUIProvider, Text, Image, VStack, Heading, Link, FormControl, FormControlLabelText, FormControlLabel, Input, InputField, FormControlHelper, FormControlHelperText, FormControlErrorIcon, FormControlErrorText, FormControlError, AlertCircleIcon } from '@gluestack-ui/themed';
+import { Box, GluestackUIProvider, Text, Image, VStack, FormControl, FormControlLabelText, FormControlLabel, Input, InputField, } from '@gluestack-ui/themed';
 import { useState } from "react";
-import HomeView from './components/HomeView';
 const Stack = createNativeStackNavigator();
+
+//Importaciones de componenetes
+import HomeView from './components/HomeView';
+import RegisterView from './components/RegisterView';
+import { TouchableOpacity } from 'react-native';
 
 
 export default function App() {
   return (<NavigationContainer>
     <GluestackUIProvider config={config}>
       <Stack.Navigator initialRouteName="Principal">
-        <Stack.Screen name="Principal" component={Principal} options={{headerShown:false}}/>
+        <Stack.Screen name="Principal" component={Principal} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeView} />
+        <Stack.Screen name="Register" component={RegisterView} options={{ headerShown: false }} />
       </Stack.Navigator>
     </GluestackUIProvider >
   </NavigationContainer >
@@ -72,11 +76,12 @@ function Principal() {
     // validate() ? navigation.navigate(HomeView) : console.log('Invalid', errors);
     navigation.navigate('Home');
   };
-  
+
   return <Box maxWidth="100%" width={"$full"} height="$1/3" borderRadius="$sm">
-    <Image size="md" width={"$full"} height={"$full"}  alt="login_image" source={require("/assets/pantalla_inicio.png")} resizeMode="cover" style={{
+    <Image size="md" width={"$full"} height={"$full"} alt="login_image" source={require("/assets/pantalla_inicio.png")} resizeMode="cover" style={{
       alignSelf: "center"
     }} />
+    <Text ml={"$5"} fontWeight='$bold' fontSize={"$2xl"} color='black'>Login</Text>
     <VStack mt={"$5"}>
       <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
         <FormControlLabel>
@@ -117,6 +122,8 @@ function Principal() {
 
     </Button>
 
-    <Text mt={"$3"}>Doesn´t have an account yet? register Here....</Text>
+    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+      <Text mt={"$2"} ml={"$1"}>Doesnt have an account yet? register here..</Text>
+    </TouchableOpacity>
   </Box>;
 }

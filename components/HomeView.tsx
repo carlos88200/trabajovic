@@ -1,6 +1,5 @@
-import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { Box, Center, Image, Button, ButtonText, ButtonIcon, ButtonGroup, Icon, AddIcon, InfoIcon, ButtonSpinner, ArrowUpIcon, Heading, Text, HStack, VStack, ThreeDotsIcon, Input, InputField } from '@gluestack-ui/themed';
+import { Box, Image, Button, ButtonText, Text } from '@gluestack-ui/themed';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 
