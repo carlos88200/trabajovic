@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Box, Image, Button, ButtonText, Text } from '@gluestack-ui/themed';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
+import BagView from './BagView';
 
 const Button1 = () => {
     <Box justifyContent="center" alignItems="center" mt={"$10"}>
@@ -51,7 +52,7 @@ const HomeView = () => {
     >
         <Tab.Screen name="Home" component={Button1} />
         <Tab.Screen name="Search" component={Button2} />
-        <Tab.Screen name="Bag shop" component={Button2} />
+        <Tab.Screen name="Bag shop" component={BagView} options={{headerShown:false}} />
         <Tab.Screen name="Favorites" component={Button2} />
     </Tab.Navigator>
     );

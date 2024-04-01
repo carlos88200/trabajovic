@@ -5,6 +5,8 @@ import { config } from "./config/gluestack-ui.config";
 import { Box, GluestackUIProvider, Text, Image, VStack, FormControl, FormControlLabelText, FormControlLabel, Input, InputField, } from '@gluestack-ui/themed';
 import { useState } from "react";
 const Stack = createNativeStackNavigator();
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'//async
 
 //Importaciones de componenetes
 import HomeView from './components/HomeView';
@@ -17,7 +19,7 @@ export default function App() {
     <GluestackUIProvider config={config}>
       <Stack.Navigator initialRouteName="Principal">
         <Stack.Screen name="Principal" component={Principal} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={HomeView} />
+        <Stack.Screen name="Home" component={HomeView} options={{headerShown:false}}/>
         <Stack.Screen name="Register" component={RegisterView} options={{ headerShown: false }} />
       </Stack.Navigator>
     </GluestackUIProvider >
@@ -26,55 +28,77 @@ export default function App() {
 }
 
 function Principal() {
-  const [formData, setData] = useState({});
-  const [errors, setErrors] = useState({});
   const navigation = useNavigation();
-  let regex_email = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/;
+  let regex_email = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
   const digit = /[0-9]/;
   const upperCase = /[A-Z]/;
   const lowerCase = /[a-z]/;
-  const nonAlphanumeric = /[^0-9A-Za-z]/;
-  const isStrongPassword = password => [digit, upperCase, lowerCase, nonAlphanumeric].every(re => re.test(password)) && password.length >= 8 && password.length <= 3;
+  const nonAlphanumeric = /[^0-9A-Za-z]/; 
+  const [formData, setData] = useState({});
+  const [errors, setErrors] = useState({});
 
-  //validate the password and email fields. 
+
+  
+  const isStrongPassword = Password =>
+  [digit, upperCase, lowerCase, nonAlphanumeric]
+    .every(re => re.test(Password))
+  && Password.length >= 8
+  && Password.length <= 32;
   const validate = () => {
     setErrors({});
-    if (regex_email.test(formData.email) === false) {
-      console.log('regex_email', formData.email);
+    console.log('email', formData.Email);
+    console.log('password', formData.Password);
+    if (regex_email.test(formData.Email) === undefined) {
+      console.log('regex_email', formData.Email);
       setErrors({
         ...errors,
-        email: 'email is not valid'
+        Email: 'email is not valid'
+      });
+      return false
+    }
+    if (formData.Email === undefined) {
+      console.log('undefined', formData.Email);
+      setErrors({
+        ...errors,
+        Email: 'email is required'
+      });
+      return false;
+    } else if (formData.Email.length < 3) {
+      console.log('length', formData.Email);
+      setErrors({
+        ...errors,
+        Email: 'email is too short'
       });
       return false;
     }
-    if (formData.email === undefined) {
-      console.log('undefined', formData.email);
+    if (!isStrongPassword(formData.Password)) {
       setErrors({
         ...errors,
-        email: 'email is required'
-      });
-      return false;
-    } else if (formData.email.length < 3) {
-      console.log('lengt', formData.email);
-      setErrors({
-        ...errors,
-        email: 'email is too short'
-      });
-      return false;
-    }
-    if (!isStrongPassword(formData.password)) {
-      setErrors({
-        ...errors,
-        password: 'password is not validate'
+        Password: 'password is not validate'
       });
       return false;
     }
     return true;
-  };
+  }
 
-  const onsubmit = () => {
+  const onsubmit = async () => {
     // validate() ? navigation.navigate(HomeView) : console.log('Invalid', errors);
-    navigation.navigate('Home');
+    if(validate()){
+      try{
+        const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
+        console.log("response", response);
+        const token = response.data.token;
+        console.log("token", token);
+        await AsyncStorage.setItem('token', JSON.stringify(token));
+        navigation.navigate("Home");
+        
+      }catch(error){
+        alert("User or Password are incorrect");
+        console.error("Error:", error);
+      }
+    }else{
+
+    }
   };
 
   return <Box maxWidth="100%" width={"$full"} height="$1/3" borderRadius="$sm">
@@ -85,12 +109,12 @@ function Principal() {
     <VStack mt={"$5"}>
       <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
         <FormControlLabel>
-          <FormControlLabelText color="black" ml="$9" fontSize={"$sm"} fontWeight='$bold'>Username</FormControlLabelText>
+          <FormControlLabelText color="black" ml="$9" fontSize={"$sm"} fontWeight='$bold'>Email</FormControlLabelText>
         </FormControlLabel>
         <Input width={"$3/4"} mx={"auto"} borderRadius={"$md"} mt={"$2"} borderColor='$black'>
-          <InputField type="text" placeholder="email" borderColor="$black" onChange={value => setData({
+          <InputField type="text" placeholder="email" borderColor="$black" onChangeText={value => setData({
             ...formData,
-            email: value
+            Email: value
           })} />
         </Input>
       </FormControl>
@@ -100,10 +124,10 @@ function Principal() {
           <FormControlLabelText color="black" fontSize="$sm" fontWeight='$bold' mt="" ml="$9">Password</FormControlLabelText>
         </FormControlLabel>
         <Input width={"$3/4"} mx="$auto" borderColor="$black" borderRadius={"$md"} mt={"$2"}>
-          <InputField onChange={value => setData({
+          <InputField type="password" placeholder="password" onChangeText={value => setData({
             ...formData,
-            password: value
-          })} type="password" placeholder="password" />
+            Password: value
+          })}  />
         </Input>
 
       </FormControl>
