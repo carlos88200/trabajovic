@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { Button, ButtonText } from '@gluestack-ui/themed';
+import { Button, ButtonText, Modal } from '@gluestack-ui/themed';
 import { config } from "./config/gluestack-ui.config";
 import { Box, GluestackUIProvider, Text, Image, VStack, FormControl, FormControlLabelText, FormControlLabel, Input, InputField, } from '@gluestack-ui/themed';
 import { useState } from "react";
@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'//async
 import HomeView from './components/HomeView';
 import RegisterView from './components/RegisterView';
 import { TouchableOpacity } from 'react-native';
+import HomeAdm from './components/HomeAdm';
+
 
 
 export default function App() {
@@ -21,6 +23,7 @@ export default function App() {
         <Stack.Screen name="Principal" component={Principal} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeView} options={{headerShown:false}}/>
         <Stack.Screen name="Register" component={RegisterView} options={{ headerShown: false }} />
+        <Stack.Screen name="HomeAdm" component={HomeAdm} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </GluestackUIProvider >
   </NavigationContainer >
@@ -28,6 +31,11 @@ export default function App() {
 }
 
 function Principal() {
+  
+
+
+
+
   const navigation = useNavigation();
   let regex_email = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
   const digit = /[0-9]/;
@@ -86,11 +94,15 @@ function Principal() {
     if(validate()){
       try{
         const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
-        console.log("response", response);
+        console.log("response login", response);
         const token = response.data.token;
-        console.log("token", token);
         await AsyncStorage.setItem('token', JSON.stringify(token));
-        navigation.navigate("Home");
+        if(response.data.Rol==1){
+          navigation.navigate('HomeAdm');
+        }else{
+          navigation.navigate("Home");
+        }
+        
         
       }catch(error){
         alert("User or Password are incorrect");
