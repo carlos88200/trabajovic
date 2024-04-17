@@ -9,10 +9,10 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage'//async
 
 //Importaciones de componenetes
-import HomeView from './components/HomeView';
+import HomeView from './Views/HomeView';
 import RegisterView from './components/RegisterView';
 import { TouchableOpacity } from 'react-native';
-import HomeAdm from './components/HomeAdm';
+import HomeAdm from './Views/HomeAdm';
 
 
 
