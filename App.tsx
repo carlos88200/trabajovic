@@ -93,7 +93,8 @@ function Principal() {
     // validate() ? navigation.navigate(HomeView) : console.log('Invalid', errors);
     if(validate()){
       try{
-        const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
+        // const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
+        const response = await axios.post('http://192.168.100.4/Mobiles/backend/public/api/UserLogin', formData);
         console.log("response login", response);
         const token = response.data.token;
         await AsyncStorage.setItem('token', JSON.stringify(token));
@@ -113,17 +114,19 @@ function Principal() {
     }
   };
 
+ 
   return <Box maxWidth="100%" width={"$full"} height="$1/3" borderRadius="$sm">
-    <Image size="md" width={"$full"} height={"$full"} alt="login_image" source={require("/assets/pantalla_inicio.png")} resizeMode="cover" style={{
+    <Image size="md" width={"$full"} height={"$full"} alt="login_image" source={require("../Cafeteria-App/assets/pantalla_inicio2.png")} resizeMode="cover" style={{
       alignSelf: "center"
     }} />
     <Text ml={"$5"} fontWeight='$bold' fontSize={"$2xl"} color='black'>Login</Text>
-    <VStack mt={"$5"}>
+    <VStack mt={"$5"} marginTop={"$5"} padding={"$5"}>
+
       <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
         <FormControlLabel>
-          <FormControlLabelText color="black" ml="$9" fontSize={"$sm"} fontWeight='$bold'>Email</FormControlLabelText>
+          <FormControlLabelText color="black" fontSize={"$sm"} fontWeight='$bold'>Email</FormControlLabelText>
         </FormControlLabel>
-        <Input width={"$3/4"} mx={"auto"} borderRadius={"$md"} mt={"$2"} borderColor='$black'>
+        <Input width={"$full"} mx={"auto"} borderRadius={"$md"} mt={"$2"} borderColor='$black'>
           <InputField type="text" placeholder="email" borderColor="$black" onChangeText={value => setData({
             ...formData,
             Email: value
@@ -133,13 +136,13 @@ function Principal() {
 
       <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false} mt={"$5"}>
         <FormControlLabel>
-          <FormControlLabelText color="black" fontSize="$sm" fontWeight='$bold' mt="" ml="$9">Password</FormControlLabelText>
+          <FormControlLabelText color="black" fontSize="$sm" fontWeight="$bold">Password</FormControlLabelText>
         </FormControlLabel>
-        <Input width={"$3/4"} mx="$auto" borderColor="$black" borderRadius={"$md"} mt={"$2"}>
+        <Input width={"$full"} borderColor="$black" borderRadius={"$md"} mt={"$2"}>
           <InputField type="password" placeholder="password" onChangeText={value => setData({
             ...formData,
             Password: value
-          })}  />
+          })} />
         </Input>
 
       </FormControl>
@@ -147,19 +150,18 @@ function Principal() {
       <Text mx={"$auto"} mt={"$3"} fontWeight=''>Forgot your password?</Text>
     </VStack>
 
-    <Button action={"primary"} onPress={onsubmit} backgroundColor={"#FFA600"} size={"lg"} mx={"$auto"} width={"$3/4"} borderRadius={"$lg"} mt={"$2"} isDisabled={false} sx={{
-      ':hover': {
-        backgroundColor: '#c4871d'
-      }
-    }}>
-      <ButtonText>
-        Login
-      </ButtonText>
+    <Box justifyContent="center" alignItems="center">
+      <Button action={"primary"} onPress={onsubmit} backgroundColor={"#FFA600"} size={"lg"} width={"$3/4"} borderRadius={"$lg"} mt={"$2"}>
+        <ButtonText>
+          Login
+        </ButtonText>
+      </Button>
 
-    </Button>
 
-    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-      <Text mt={"$2"} ml={"$1"}>Doesnt have an account yet? register here..</Text>
-    </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text mt={"$2"} ml={"$1"}>Doesnt have an account yet? <Text fontWeight='$bold'>Register Here</Text></Text>
+      </TouchableOpacity>
+    </Box>
   </Box>;
 }
