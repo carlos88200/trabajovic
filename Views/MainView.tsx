@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Card, Heading, Image, Text, ScrollView, VStack, Button, ButtonText, Icon } from '@gluestack-ui/themed';
 import { useNavigation } from '@react-navigation/native';
-import { getFoodItems } from '../API/Request';
-import { FoodResponse } from '../API/Config';
+import { getFoodItems } from './API/Request';
+import { FoodResponse } from './API/Config';
+
 
 
 
@@ -35,7 +36,7 @@ const MainView = () => {
     return <Box mt={"$5"} padding={"$5"} height={"$full"}>
         <Text ml={"$2"} fontWeight='$bold' fontSize={"$xl"} color='black'>Hungry Chilaquiles Killer</Text>
 
-        <Image size="md" width={"$full"} height={"$1/2"} alt="login_image" source={require("../../assets/chilaquiles.jpeg")} resizeMode="cover" style={{
+        <Image size="md" width={"$full"} height={"$1/2"} alt="login_image" source={require("../assets/chilaquiles.jpeg")} resizeMode="cover" style={{
             alignSelf: "center"
         }} />
 

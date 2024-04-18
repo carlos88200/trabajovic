@@ -10,9 +10,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'//async
 
 //Importaciones de componenetes
 import HomeView from './Views/HomeView';
-import RegisterView from './components/RegisterView';
 import { TouchableOpacity } from 'react-native';
 import HomeAdm from './Views/HomeAdm';
+import RegisterView from './Views/RegisterView';
 
 
 
