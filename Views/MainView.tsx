@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Card, Heading, Image, Text, ScrollView, VStack, Button, ButtonText, Icon } from '@gluestack-ui/themed';
 import { useNavigation } from '@react-navigation/native';
 import { getFoodItems } from './API/Request';
-import { FoodResponse } from './API/Config';
-
-
-
+import { FoodResponse , Img} from './API/Config';
 
 const MainView = () => {
 
@@ -50,7 +47,7 @@ const MainView = () => {
                             width="$full"
                             borderRadius="$md"
                             source={{
-                                uri: `http://192.168.100.4/Mobiles/Backend/public/storage/Images/${item.Image}`,
+                                uri: `${Img+item.Image}`,
                             }}
                         />
                         <Heading mb="$1" size="md">

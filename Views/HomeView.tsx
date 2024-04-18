@@ -3,11 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 
 //<--- views---> //
-
 import FavoritesView from './FavoritesView';
-// import MainView from './MainView';
-
-//<!-- componets --> //
 import Bagview from './FavoritesView';
 import MyStack from './Components/Stack';
 import SearchView from './SearchView';
