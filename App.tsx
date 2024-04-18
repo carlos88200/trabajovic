@@ -94,10 +94,11 @@ function Principal() {
     if(validate()){
       try{
         // const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
-        const response = await axios.post('http://192.168.100.4/Mobiles/backend/public/api/UserLogin', formData);
+        const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
         console.log("response login", response);
         const token = response.data.token;
         await AsyncStorage.setItem('token', JSON.stringify(token));
+        await AsyncStorage.setItem('Name', JSON.stringify(response.data.name));
         if(response.data.Rol==1){
           navigation.navigate('HomeAdm');
         }else{

@@ -7,7 +7,7 @@ export const Api = axios.create({
   baseURL: `${protocol}://${domainName}/Mobiles/backend/public/api/`,
 });
 
-export const Img = "http://192.168.100.4/Mobiles/Backend/public/storage/Images/";
+export const Img = "http://localhost/1.75/backend/public/storage/Images/";
 
 
 export interface FoodResponse {
