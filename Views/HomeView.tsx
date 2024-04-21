@@ -8,6 +8,7 @@ import FavoritesView from './FavoritesView';
 import Bagview from './BagView';
 import MyStack from './Components/Stack';
 import SearchView from './SearchView';
+import Account from './account';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'//async
@@ -99,6 +100,8 @@ const HomeView = () => {
                     iconName = focused ? 'bag' : 'bag-outline';
                 } else if (route.name === 'Favorites') {
                     iconName = focused ? 'heart' : 'heart-outline';
+                }else if (route.name === 'Account') {
+                    iconName = focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline';
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
             },
@@ -109,131 +112,17 @@ const HomeView = () => {
         }}
     >
         <Tab.Screen name="Home" component={MyStack} options={{ headerShown: false }} />
-        <Tab.Screen name="Search" component={SearchView} options={{
-            headerShown: true, header: () => {
-                return (
-
-
-
-                    <Box>
-
-                        <Button alignContent='center' onPress={() => setShowModal(true)} ref={ref} backgroundColor='#FFA600' margin={"$3px"} height={"$50px"} width={"$50px"} borderRadius={"$50%"} size="xs" variant="solid" action="primary" isDisabled={false} isFocusVisible={false} >
-                            <ButtonText fontFamily='Arial' fontSize={"$15px"}>{namedosData} </ButtonText>
-                            
-                        </Button>
-
+        <Tab.Screen name="Search" component={SearchView} options={{ headerShown: true, header:()=>{
+            return(
+                <Box>
                     
-                        <Modal
-                            isOpen={showModal}
-                            onClose={() => {
-                                setShowModal(false)
-                            }}
-                            finalFocusRef={ref}
-                        >
-                            <ModalBackdrop />
-                            <ModalContent>
-                                <ModalHeader>
-                                    <Heading size="lg">{userData.Name}</Heading>
-                                    <ModalCloseButton>
-                                        <Icon as={CloseIcon} />
-                                    </ModalCloseButton>
-                                </ModalHeader>
-                                <ModalBody>
-                                    <Text>
-                                        
-                                    </Text>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        action="secondary"
-                                        mr="$3"
-                                        onPress={() => {
-                                            setShowModal(false)
-                                        }}
-                                    >
-                                        <ButtonText>Cancel</ButtonText>
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        action="positive"
-                                        borderWidth="$0"
-                                        onPress={logOut}
-                                    >
-                                        <ButtonText>LogOut</ButtonText>
-                                    </Button>
-                                </ModalFooter>
-                            </ModalContent>
-                        </Modal>
-                    </Box>
+                </Box>
+            );
+        } }} />
+        <Tab.Screen name="Bag shop" component={Bagview} options={{ headerShown: false }}/>
+        <Tab.Screen name="Favorites" component={FavoritesView} options={{ headerShown: false }} />
+        <Tab.Screen name="Account" component={Account} options={{ headerShown: false }} />
 
-                );
-            }
-        }} />
-        <Tab.Screen name="Bag shop" component={Bagview} options={{ headerShown: false }} />
-        <Tab.Screen name="Favorites" component={FavoritesView} options={{
-            headerShown: true, header: () => {
-                return (
-
-
-
-                    <Box>
-
-                        <Button alignContent='center' onPress={() => setShowModal(true)} ref={ref} backgroundColor='#FFA600' margin={"$3px"} height={"$50px"} width={"$50px"} borderRadius={"$50%"} size="xs" variant="solid" action="primary" isDisabled={false} isFocusVisible={false} >
-                            <ButtonText fontFamily='Arial' fontSize={"$15px"}>{namedosData} </ButtonText>
-                            
-                        </Button>
-
-                    
-                        <Modal
-                            isOpen={showModal}
-                            onClose={() => {
-                                setShowModal(false)
-                            }}
-                            finalFocusRef={ref}
-                        >
-                            <ModalBackdrop />
-                            <ModalContent>
-                                <ModalHeader>
-                                    <Heading size="lg">{userData.Name}</Heading>
-                                    <ModalCloseButton>
-                                        <Icon as={CloseIcon} />
-                                    </ModalCloseButton>
-                                </ModalHeader>
-                                <ModalBody>
-                                    <Text>
-                                        
-                                    </Text>
-                                </ModalBody>
-                                <ModalFooter>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        action="secondary"
-                                        mr="$3"
-                                        onPress={() => {
-                                            setShowModal(false)
-                                        }}
-                                    >
-                                        <ButtonText>Cancel</ButtonText>
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        action="positive"
-                                        borderWidth="$0"
-                                        onPress={logOut}
-                                    >
-                                        <ButtonText>LogOut</ButtonText>
-                                    </Button>
-                                </ModalFooter>
-                            </ModalContent>
-                        </Modal>
-                    </Box>
-
-                );
-            }
-        }} />
     </Tab.Navigator>
     );
 };
