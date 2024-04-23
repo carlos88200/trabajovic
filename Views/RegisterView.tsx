@@ -1,7 +1,7 @@
 import { FormControl, Text, Image, FormControlLabel, Button, ButtonText, FormControlLabelText, Input, InputField } from '@gluestack-ui/themed';
 import { Box, VStack } from '@gluestack-ui/themed';
 import React, { useState, useEffect } from 'react';
-
+import { ApiUrl } from './API/Config';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { Alert } from 'react-native';
@@ -65,8 +65,8 @@ const RegisterView = () => {
             try {
                 formData.Rol = 0;
                 console.log("datos", formData)
-                // const response = await axios.post('http://localhost/1.75/backend/public/api/StoreRegister', formData); //carlos
-                const response = await axios.post('http://192.168.100.4/Mobiles/backend/public/api/StoreRegister', formData); //lemuel
+                const response = await axios.post(`${ApiUrl}StoreRegister`, formData); //carlos
+                //const response = await axios.post('http://192.168.100.4/Mobiles/backend/public/api/StoreRegister', formData); //lemuel
                 console.log("Successful registration", response.data);
                 Alert.alert('success', 'login succesfully');
                 navigation.navigate('Principal');

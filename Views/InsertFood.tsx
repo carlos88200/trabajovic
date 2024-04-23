@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { ApiUrl } from './API/Config';
 
 const InsertFood = () => {
     const [formData, setData] = useState({});
@@ -18,7 +19,7 @@ const InsertFood = () => {
     useEffect(() => {
         const data = async () => {
             try {
-                const response = await axios.get('http://localhost/1.75/backend/public/api/foodIndex');
+                const response = await axios.get(`${ApiUrl}foodIndex`);
                 setFoodData(response.data);
             } catch (error) {
                 console.log("error getting the groups", error);
@@ -26,7 +27,7 @@ const InsertFood = () => {
         };
         const dataGroup = async () => {
             try {
-                const response = await axios.get('http://localhost/1.75/backend/public/api/FoodGroupIndex');
+                const response = await axios.get(`${ApiUrl}FoodGroupIndex`);
                 setGroupData(response.data);
             } catch (error) {
                 console.log("error getting the groups", error);
@@ -68,7 +69,7 @@ const InsertFood = () => {
     
             const response = await axios({
                 method: 'POST',
-                url: 'http://localhost/1.75/backend/public/api/foodStore',
+                url: `${ApiUrl}foodStore`,
                 data: formDta,
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -77,7 +78,7 @@ const InsertFood = () => {
     
             console.log("agregado",response.data);
             try {
-                const response = await axios.get('http://localhost/1.75/backend/public/api/foodIndex');
+                const response = await axios.get(`${ApiUrl}foodIndex`);
                 setFoodData(response.data);
                 console.log("new", response.data);
             } catch (error) {
@@ -94,9 +95,9 @@ const InsertFood = () => {
     
     const onDelete = async (id: string) => {
         try {
-            axios.post(`http://localhost/1.75/backend/public/api/FoodDestroy/${id}`);
+            axios.post(`${ApiUrl}FoodDestroy/${id}`);
             setShowModal(false);
-            const response = await axios.get('http://localhost/1.75/backend/public/api/foodIndex');
+            const response = await axios.get(`${ApiUrl}foodIndex`);
             setFoodData(response.data);
             console.log("deleted");
 

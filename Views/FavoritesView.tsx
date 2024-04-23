@@ -3,24 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'//async
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
-
-
-
-
-
-
+import { ApiUrl } from './API/Config';
 const Bagview = () => {
     const navigation = useNavigation();
     // const token = await AsyncStorage.getItem('token');
     //console.log("token en bag", token);
-
-
-
-
-
-
-
     const [userData, setUserData] = useState({});
     const [FavoriteData, setFavoriteData] = useState({});
     const [productData, setProductData] = useState<any[]>([]);
@@ -49,7 +36,7 @@ const Bagview = () => {
             if (token) {
 
                 try {
-                    const response = await axios.get("http://localhost/1.75/backend/public/api/Userauth", {
+                    const response = await axios.get(`${ApiUrl}Userauth`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -64,7 +51,7 @@ const Bagview = () => {
             }
             
             try {
-                const response = await axios.get(`http://localhost/1.75/backend/public/api/showfav/${idUser}`);
+                const response = await axios.get(`${ApiUrl}showfav/${idUser}`);
                 setProductData(response.data);
 
             } catch (error) {

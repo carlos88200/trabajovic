@@ -10,7 +10,7 @@ const InserFoodGroups = () => {
     useEffect(() => {
         const data = async()=>{
             try {
-                const response = await axios.get('http://localhost/1.75/backend/public/api/FoodGroupIndex');
+                const response = await axios.get(`${ApiUrl}FoodGroupIndex`);
                 setGroupData(response.data);               
             } catch (error) {
                 console.log("error getting the groups", error);
@@ -21,8 +21,8 @@ const InserFoodGroups = () => {
 
     const onSubmit = async () => {
         try {
-            axios.post('http://localhost/1.75/backend/public/api/FoodGroupStore', formData);
-            const response = await axios.get('http://localhost/1.75/backend/public/api/FoodGroupIndex');
+            axios.post(`${ApiUrl}FoodGroupStore`, formData);
+            const response = await axios.get(`${ApiUrl}FoodGroupIndex`);
             setGroupData(response.data); 
 
         } catch (arror) {
@@ -32,8 +32,8 @@ const InserFoodGroups = () => {
     }
     const onDelete = async(id:string)=>{
         try {
-            axios.post(`http://localhost/1.75/backend/public/api/FoodGroupDestroy/${id}`);
-            const response = await axios.get('http://localhost/1.75/backend/public/api/FoodGroupIndex');
+            axios.post(`${ApiUrl}FoodGroupDestroy/${id}`);
+            const response = await axios.get(`${ApiUrl}FoodGroupIndex`);
             setGroupData(response.data); 
             console.log("deleted");
             
