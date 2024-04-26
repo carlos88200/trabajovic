@@ -12,24 +12,24 @@ import Account from './account';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'//async
+import InsertFood from './InsertFood';
+import InsertFoodGroups from './InserFoodGroups'
 
 
 
 
-
-const HomeView = () => {
+const HomeView = ({route}) => {
     const navigation = useNavigation();
-
-
     const [showModal, setShowModal] = useState(false)
     const ref = React.useRef(null)
     const [userData, setUserData] = useState({});
     const [namedosData, setNamedosData] = useState({});
-
-
     let tokenString;
     let token;
+    const role = route.params.role;
     const logOut =async()=>{
+    
+    
         
         try {
             await AsyncStorage.removeItem('token');
@@ -54,7 +54,7 @@ const HomeView = () => {
             let carUser = [];
             let caarEnd = [];
             let total = 0;
-            console.log("namedos uuui", namedos);
+            console.log("rol", role);
 
 
             if (token) {
@@ -87,43 +87,91 @@ const HomeView = () => {
 
 
     }, []);
+    if(role==1){
+        return (<Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    if (route.name === 'Home') {
+                        iconName = focused ? 'home' : 'home-outline';
+                    } else if (route.name === 'Search') {
+                        iconName = focused ? 'search' : 'search-outline';
+                    } else if (route.name === 'Bag shop') {
+                        iconName = focused ? 'bag' : 'bag-outline';
+                    } else if (route.name === 'Favorites') {
+                        iconName = focused ? 'heart' : 'heart-outline';
+                    }else if (route.name === 'Account') {
+                        iconName = focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline';
+                    } else if (route.name === 'Food Groups') {
+                        iconName = focused ? 'nutrition' : 'nutrition-outline';
+                    } else if (route.name === 'Food') {
+                        iconName = focused ? 'fast-food' : 'fast-food-outline';
+                    }
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+            })}
+            tabBarOptions={{
+                activeTintColor: '#FFA600',
+                inactiveTintColor: 'gray',
+            }}
+        >
+            <Tab.Screen name="Home" component={MyStack} options={{ headerShown: false }} />
+            <Tab.Screen name="Search" component={SearchView} options={{ headerShown: true, header:()=>{
+                return(
+                    <Box>
+                        
+                    </Box>
+                );
+            } }} />
+            <Tab.Screen name="Bag shop" component={Bagview} options={{ headerShown: false }}/>
+            <Tab.Screen name="Favorites" component={FavoritesView} options={{ headerShown: false }} />
+            <Tab.Screen name="Food Groups" component={InsertFoodGroups} options={{ headerShown: false }} />
+            <Tab.Screen name="Food" component={InsertFood} options={{ headerShown: false }} />
+            <Tab.Screen name="Account" component={Account} options={{ headerShown: false }} />
+        </Tab.Navigator>
+        );
+        
+    }else{
+        return (<Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    if (route.name === 'Home') {
+                        iconName = focused ? 'home' : 'home-outline';
+                    } else if (route.name === 'Search') {
+                        iconName = focused ? 'search' : 'search-outline';
+                    } else if (route.name === 'Bag shop') {
+                        iconName = focused ? 'bag' : 'bag-outline';
+                    } else if (route.name === 'Favorites') {
+                        iconName = focused ? 'heart' : 'heart-outline';
+                    }else if (route.name === 'Account') {
+                        iconName = focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline';
+                    }
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+            })}
+            tabBarOptions={{
+                activeTintColor: '#FFA600',
+                inactiveTintColor: 'gray',
+            }}
+        >
+            <Tab.Screen name="Home" component={MyStack} options={{ headerShown: false }} />
+            <Tab.Screen name="Search" component={SearchView} options={{ headerShown: true, header:()=>{
+                return(
+                    <Box>
+                        
+                    </Box>
+                );
+            } }} />
+            <Tab.Screen name="Bag shop" component={Bagview} options={{ headerShown: false }}/>
+            <Tab.Screen name="Favorites" component={FavoritesView} options={{ headerShown: false }} />
+            <Tab.Screen name="Account" component={Account} options={{ headerShown: false }} />
+    
+        </Tab.Navigator>
+        );
+    }
+    
 
-    return (<Tab.Navigator
-        screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-                let iconName;
-                if (route.name === 'Home') {
-                    iconName = focused ? 'home' : 'home-outline';
-                } else if (route.name === 'Search') {
-                    iconName = focused ? 'search' : 'search-outline';
-                } else if (route.name === 'Bag shop') {
-                    iconName = focused ? 'bag' : 'bag-outline';
-                } else if (route.name === 'Favorites') {
-                    iconName = focused ? 'heart' : 'heart-outline';
-                }else if (route.name === 'Account') {
-                    iconName = focused ? 'ellipsis-horizontal' : 'ellipsis-horizontal-outline';
-                }
-                return <Ionicons name={iconName} size={size} color={color} />;
-            },
-        })}
-        tabBarOptions={{
-            activeTintColor: '#FFA600',
-            inactiveTintColor: 'gray',
-        }}
-    >
-        <Tab.Screen name="Home" component={MyStack} options={{ headerShown: false }} />
-        <Tab.Screen name="Search" component={SearchView} options={{ headerShown: true, header:()=>{
-            return(
-                <Box>
-                    
-                </Box>
-            );
-        } }} />
-        <Tab.Screen name="Bag shop" component={Bagview} options={{ headerShown: false }}/>
-        <Tab.Screen name="Favorites" component={FavoritesView} options={{ headerShown: false }} />
-        <Tab.Screen name="Account" component={Account} options={{ headerShown: false }} />
-
-    </Tab.Navigator>
-    );
+    
 };
 export default HomeView;

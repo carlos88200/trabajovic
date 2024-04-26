@@ -1,7 +1,7 @@
 import { Box,Heading,Card, VStack, Text, Button, ButtonText, FormControl, FormControlLabel, Input, InputField, FormControlLabelText } from '@gluestack-ui/themed';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { ApiUrl } from './API/Config';
 const InserFoodGroups = () => {
     const [formData, setData] = useState({});
     const [groupData, setGroupData] = useState<any[]>([]);

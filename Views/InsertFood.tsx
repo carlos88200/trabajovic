@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ApiUrl } from './API/Config';
+import { Picker } from '@react-native-picker/picker';
 
 const InsertFood = () => {
     const [formData, setData] = useState({});
@@ -57,7 +58,7 @@ const InsertFood = () => {
         try {
             const responsee = await fetch(image);
             const blob = await responsee.blob();
-            
+
 
             console.log("name", formData.Name, "yyyy00", formData);
             let formDta = new FormData();
@@ -66,7 +67,7 @@ const InsertFood = () => {
             formDta.append('Price', formData.Price);
             formDta.append('idFoodGroupFK', formData.idFoodGroupFK);
             formDta.append('Image', blob, 'filename.jpg');
-    
+
             const response = await axios({
                 method: 'POST',
                 url: `${ApiUrl}foodStore`,
@@ -75,8 +76,8 @@ const InsertFood = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-    
-            console.log("agregado",response.data);
+
+            console.log("add", response.data);
             try {
                 const response = await axios.get(`${ApiUrl}foodIndex`);
                 setFoodData(response.data);
@@ -86,13 +87,13 @@ const InsertFood = () => {
             }
             setShowModal(false);
 
-            
+
 
         } catch (error) {
             console.log("error", error);
         }
     }
-    
+
     const onDelete = async (id: string) => {
         try {
             axios.post(`${ApiUrl}FoodDestroy/${id}`);
@@ -163,16 +164,17 @@ const InsertFood = () => {
                             </FormControl>
                             <FormControl size={"md"} isDisabled={false} isRequired={false}>
                                 <Text>Category</Text>
-                                <select name="idFoodGroupFk" id="" onChange={event => setData({
-                                    ...formData,
-                                    idFoodGroupFK: event.target.value
-                                })}>
-                                     <option value="">Choose...</option>
-                                    {groupData.map((group, index) => (
-                                        <option key={index} value={group.id}>{group.Name}</option>
-                                    ))}
 
-                                </select>
+                                <Picker
+                                    selectedValue={formData.idFoodGroupFK}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        setData({ ...formData, idFoodGroupFK: itemValue })
+                                    }>
+                                    <Picker.Item label="Choosee..." value="" />
+                                    {groupData.map((group, index) => (
+                                        <Picker.Item key={index} label={group.Name} value={group.id} />
+                                    ))}
+                                </Picker>
 
                             </FormControl>
 

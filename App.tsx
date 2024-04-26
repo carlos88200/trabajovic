@@ -6,13 +6,13 @@ import { Box, GluestackUIProvider, Text, Image, VStack, FormControl, FormControl
 import { useState } from "react";
 const Stack = createNativeStackNavigator();
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage'//async
-
+import AsyncStorage from '@react-native-async-storage/async-storage'//asyn
 //Importaciones de componenetes
 import HomeView from './Views/HomeView';
 import { TouchableOpacity } from 'react-native';
 import HomeAdm from './Views/HomeAdm';
 import RegisterView from './Views/RegisterView';
+import { ApiUrl } from './Views/API/Config';
 
 
 
@@ -94,15 +94,17 @@ function Principal() {
     if(validate()){
       try{
         // const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
-        const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
+        const response = await axios.post(`${ApiUrl}UserLogin`, formData);
         console.log("response login", response);
         const token = response.data.token;
         await AsyncStorage.setItem('token', JSON.stringify(token));
         await AsyncStorage.setItem('Name', JSON.stringify(response.data.name));
+        
         if(response.data.Rol==1){
-          navigation.navigate('HomeAdm');
+          navigation.navigate('Home', {role: response.data.Rol});
         }else{
-          navigation.navigate("Home");
+          navigation.navigate('Home', {role: response.data.Rol});
+        
         }
         
         
