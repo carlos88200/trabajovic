@@ -4,16 +4,11 @@ import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage'//async
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
-
-
-
-
 const Account = () => {
     const [userData, setUserData] = useState({});
     let tokenString;
     let token;
     const navigation = useNavigation();
-
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -23,8 +18,6 @@ const Account = () => {
             let carUser = [];
             let caarEnd = [];
             let total = 0;
-
-
 
             if (token) {
 
@@ -42,8 +35,6 @@ const Account = () => {
                     console.log(" we cannot get the information ", error);
                 }
             }
-
-
         };
 
         fetchUserData();
@@ -57,20 +48,20 @@ const Account = () => {
     return (
         <Box backgroundColor='white' alignItems="center" mt={10} display="flex" flexDirection="column" height={"$full"} >
 
-            <Box borderRadius={"10px 10px 0 0"} height={'30%'} width={'100%'} backgroundColor='#FFA600' p={4} display='inline-block'>
-                <Avatar bgColor='black' size="xl" borderRadius="$full" left={"$5%"} top={"$15%"}>
+            <Box  height={'30%'} width={'100%'} backgroundColor='#FFA600' p={4} display='inline-block'>
+                <Avatar bgColor='black' size="xl" marginLeft={"$10"} marginTop={"$10"}>
                     <AvatarFallbackText>{userData.Name}</AvatarFallbackText>
                 </Avatar>
-                <Text position='absolute' left={"33%"} color='white' fontFamily='Arial' fontSize={"$175%"} top={"$25%"} >Hi, {userData.Name}</Text>
+                <Text position='absolute' left={"33%"} color='white' fontSize={"$2xl"} marginTop={"$1/4"} >Hi, {userData.Name}</Text>
             </Box>
-            <Box width={"$full"} flex="1" p={4} overflow='auto'>
-                <Text color='black' fontFamily='Arial' fontSize={"$175%"}><strong>Name:</strong> {userData.Name}</Text>
-                <Text color='black' fontFamily='Arial' fontSize={"$175%"}><strong>FirstSurname:</strong> {userData.FirstSurname}</Text>
-                <Text color='black' fontFamily='Arial' fontSize={"$175%"}><strong>SecondSurname:</strong> {userData.SecondSurname}</Text>
-                <Text color='black' fontFamily='Arial' fontSize={"$175%"}><strong>PhoneNumber:</strong> {userData.PhoneNumber}</Text>
-                <Text color='black' fontFamily='Arial' fontSize={"$175%"}><strong>Email:</strong> {userData.Email}</Text>
+            <Box width={"$full"}  p={4} >
+                <Text color='black' fontSize={"$2xl"}>Name: {userData.Name}</Text>
+                <Text color='black' fontSize={"$2xl"}>FirstSurname:{userData.FirstSurname}</Text>
+                <Text color='black' fontSize={"$2xl"}>SecondSurname:{userData.SecondSurname}</Text>
+                <Text color='black' fontSize={"$2xl"}>PhoneNumber: {userData.PhoneNumber}</Text>
+                <Text color='black' fontSize={"$2xl"}>Email: {userData.Email}</Text>
             </Box>
-            <Button onPress={onSubmit} action='primary' position="fixed" width="300px" backgroundColor='#FFA600' color='white' top={"80%"} p={2}>
+            <Button onPress={onSubmit} action='primary' width={"$full"} backgroundColor='#FFA600' color='white' top={"80%"} p={2}>
                 <ButtonText>
                     LogOut
                 </ButtonText>

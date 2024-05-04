@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getFoodItem } from '../API/Request';
 import { FoodResponse, Img } from '../API/Config';
-import { AlertIcon,AlertText, InfoIcon, Box, Image, VStack, Text, Button, Alert, ButtonText } from '@gluestack-ui/themed';
+import { AlertIcon, AlertText, InfoIcon, Box, Image, VStack, Text, Button, Alert, ButtonText } from '@gluestack-ui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage'//async
 import axios from 'axios';
 import { ApiUrl } from '../API/Config';
@@ -10,9 +10,12 @@ import { ApiUrl } from '../API/Config';
 const DetailScreen = ({ route }) => {
     const [userData, setUserData] = useState({});
     const [alertMessage, setAlertMessage] = useState('');
-
+    const [Favorite, setFavorite] = useState('');
+    const [mode, setMode] = useState('Add');
+    const [idUser, setidUser] = useState('');
     let tokenString;
     let token;
+    let IdUs;
 
     const { Id } = route.params;
     const [FoodItem, SetFoodItem] = useState<FoodResponse[]>([]);
@@ -33,42 +36,63 @@ const DetailScreen = ({ route }) => {
             console.log("que tiene FOOD Item:", FoodItem);
         }
     }, [FoodItem]);
-    const addBag = async (idUser: String, id: String) => {
-        console.log("id", idUser, "y", id);
 
+    const addBag = async (idUser: String, id: String) => {
         try {
             const response = await axios.post(`${ApiUrl}storecar`, {
                 IdUserFK: idUser,
                 IdFoodFK: id
             });
-            console.log("do", response);
-
-
             <Alert mx='$2.5' action="info" variant="solid" >
                 <AlertIcon as={InfoIcon} mr="$3" />
                 <AlertText>
-                   added to cart
-
+                    added to cart
                 </AlertText>
             </Alert>
-            console.log("al");
-
-
         } catch (error) {
             console.error("Error al agregar a favoritos:", error);
         }
     }
+
+
+    const AddFavorite = async () => {
+        try {
+            const response = await axios.post(`${ApiUrl}FavoriteStore`, {
+                IdUserFK: idUser,
+                IdFoodFK: Id
+            });
+            if (response) {
+                setMode('Added');
+            }
+            <Alert mx='$2.5' action="info" variant="solid" >
+                <AlertIcon as={InfoIcon} mr="$3" />
+                <AlertText>
+                    added to favorites
+                </AlertText>
+            </Alert>
+        } catch (error) {
+            console.error("Error al agregar a favoritos:", error);
+        }
+    }
+
+    const deleteFavorite = async () => {
+        try {
+            const response = await axios.post(`${ApiUrl}FavoriteDestroy/${Favorite}`, {
+                IdFoodFK: Id
+            });
+            if (response.data) {
+                setMode('Add');
+            }
+        } catch (error) {
+
+        }
+    }
+
     useEffect(() => {
         const fetchUserData = async () => {
             tokenString = await AsyncStorage.getItem('token');
             token = JSON.parse(tokenString);
-            let idUser;
-
-
-
-
             if (token) {
-
                 try {
                     const response = await axios.get(`${ApiUrl}Userauth`, {
                         headers: {
@@ -76,21 +100,48 @@ const DetailScreen = ({ route }) => {
                         }
                     });
                     setUserData(response.data);
-                    idUser = response.data.id;
-                    //console.log("inf", response.data);
-
-
+                    setidUser(response.data.id);
+                    console.log("id user:",response.data.id);
+                    IdUs = response.data.id;
                 } catch (error) {
                     console.log(" we cannot get the information ", error);
                 }
             }
-
-
         };
 
         fetchUserData();
+    }, []);
 
 
+
+    const favoriteData = async () => {
+        try {
+            const data = {
+                IdUserFK: IdUs ,
+                IdFoodFK: Id
+            }
+            console.log("se manda", data);
+            
+            const favorite = await axios({
+                method: 'POST',
+                url: `${ApiUrl}Favorite`,
+                data: data,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (favorite.data.id !== null) {
+                setFavorite(favorite.data.id)
+                setMode('Added');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        setTimeout(() => {
+            favoriteData()
+        }, 2000)
     }, []);
 
     return (
@@ -113,8 +164,21 @@ const DetailScreen = ({ route }) => {
                 <ButtonText>
                     Add Bag
                 </ButtonText>
-
             </Button>
+
+            {mode === "Add" ? (
+                <Button action='primary' my={"$5"} onPress={() => AddFavorite(userData.id, FoodItem.id)}>
+                    <ButtonText>
+                        Add to favorites
+                    </ButtonText>
+                </Button>
+            ) : (
+                <Button action='primary' my={"$5"} onPress={() => deleteFavorite()}>
+                    <ButtonText>
+                        delete favorite
+                    </ButtonText>
+                </Button>
+            )}
         </Box>
     );
 };

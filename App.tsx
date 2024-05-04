@@ -21,9 +21,9 @@ export default function App() {
     <GluestackUIProvider config={config}>
       <Stack.Navigator initialRouteName="Principal">
         <Stack.Screen name="Principal" component={Principal} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={HomeView} options={{headerShown:false}}/>
+        <Stack.Screen name="Home" component={HomeView} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterView} options={{ headerShown: false }} />
-        <Stack.Screen name="HomeAdm" component={HomeAdm} options={{ headerShown: false }}/>
+        <Stack.Screen name="HomeAdm" component={HomeAdm} options={{ headerShown: false }} />
       </Stack.Navigator>
     </GluestackUIProvider >
   </NavigationContainer >
@@ -31,27 +31,22 @@ export default function App() {
 }
 
 function Principal() {
-  
-
-
-
-
   const navigation = useNavigation();
   let regex_email = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
   const digit = /[0-9]/;
   const upperCase = /[A-Z]/;
   const lowerCase = /[a-z]/;
-  const nonAlphanumeric = /[^0-9A-Za-z]/; 
+  const nonAlphanumeric = /[^0-9A-Za-z]/;
   const [formData, setData] = useState({});
   const [errors, setErrors] = useState({});
 
 
-  
+
   const isStrongPassword = Password =>
-  [digit, upperCase, lowerCase, nonAlphanumeric]
-    .every(re => re.test(Password))
-  && Password.length >= 8
-  && Password.length <= 32;
+    [digit, upperCase, lowerCase, nonAlphanumeric]
+      .every(re => re.test(Password))
+    && Password.length >= 8
+    && Password.length <= 32;
   const validate = () => {
     setErrors({});
     console.log('email', formData.Email);
@@ -91,33 +86,38 @@ function Principal() {
 
   const onsubmit = async () => {
     // validate() ? navigation.navigate(HomeView) : console.log('Invalid', errors);
-    if(validate()){
-      try{
+    if (validate()) {
+      try {
         // const response = await axios.post('http://localhost/1.75/backend/public/api/UserLogin', formData);
         const response = await axios.post(`${ApiUrl}UserLogin`, formData);
         console.log("response login", response);
         const token = response.data.token;
-        await AsyncStorage.setItem('token', JSON.stringify(token));
-        await AsyncStorage.setItem('Name', JSON.stringify(response.data.name));
-        
-        if(response.data.Rol==1){
-          navigation.navigate('Home', {role: response.data.Rol});
-        }else{
-          navigation.navigate('Home', {role: response.data.Rol});
-        
+        if (token) {
+          await AsyncStorage.setItem('token', JSON.stringify(token));
+        }
+        if (response.data.name) {
+          await AsyncStorage.setItem('Name', JSON.stringify(response.data.name));
         }
         
-        
-      }catch(error){
+        // await AsyncStorage.setItem('token', JSON.stringify(token));
+        // await AsyncStorage.setItem('Name', JSON.stringify(response.data.name));
+
+        if (response.data.Rol === 1) {
+          navigation.navigate('Home', { role: response.data.Rol });
+        } else {
+          navigation.navigate('Home', { role: response.data.Rol });
+
+        }
+      } catch (error) {
         alert("User or Password are incorrect");
         console.error("Error:", error);
       }
-    }else{
+    } else {
 
     }
   };
 
- 
+
   return <Box maxWidth="100%" width={"$full"} height="$1/3" borderRadius="$sm">
     <Image size="md" width={"$full"} height={"$full"} alt="login_image" source={require("../Cafeteria-App/assets/pantalla_inicio2.png")} resizeMode="cover" style={{
       alignSelf: "center"
@@ -159,8 +159,6 @@ function Principal() {
           Login
         </ButtonText>
       </Button>
-
-
 
       <TouchableOpacity onPress={() => navigation.navigate('Register')}>
         <Text mt={"$2"} ml={"$1"}>Doesnt have an account yet? <Text fontWeight='$bold'>Register Here</Text></Text>

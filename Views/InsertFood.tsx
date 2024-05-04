@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { ApiUrl } from './API/Config';
+import { ApiUrl, Img } from './API/Config';
 import { Picker } from '@react-native-picker/picker';
 
 const InsertFood = () => {
@@ -12,8 +12,11 @@ const InsertFood = () => {
     const [groupData, setGroupData] = useState<any[]>([]);
     const [image, setImage] = useState(null);
     const [showModal, setShowModal] = useState(false)
+    const [selectedFood, setSelectedFood] = useState(null); // Nuevo estado para almacenar el producto seleccionado
     console.log(showModal)
     const ref = React.useRef(null)
+    const [mode, setmode] = useState("register");
+    const [Id, setId] = useState('');
 
 
 
@@ -40,7 +43,6 @@ const InsertFood = () => {
 
 
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
@@ -86,9 +88,6 @@ const InsertFood = () => {
                 console.log("error getting the groups", error);
             }
             setShowModal(false);
-
-
-
         } catch (error) {
             console.log("error", error);
         }
@@ -106,12 +105,49 @@ const InsertFood = () => {
             console.log("not deleted");
         }
     }
+
+    const onModify = (food: any, id: string) => {
+        setSelectedFood(food);
+        setId(id);
+        setmode("modify");
+        console.log(Id);
+        console.log(food);
+        setData({
+            Name: food.Name,
+            Description: food.Description,
+            Price: food.Price,
+            idFoodGroupFK: food.idFoodGroupFK,
+            Image: Blob
+        });
+        setShowModal(true);
+    };
+
+    const update = async (food) => {
+        console.log("que se manda: ", food);
+        console.log(Id);
+
+        const send = await axios({
+            method: 'PUT',
+            url: `${ApiUrl}FoodUpdate/${Id}`,
+            data: food,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(send.data);
+        setShowModal(false);
+        const response = await axios.get(`${ApiUrl}foodIndex`);
+        setFoodData(response.data);
+        console.log("deleted");
+    }
+    const clear = () => {
+        setData({});
+    }
     return (
         <Box height={"$full"} width={"$full"}>
-
-            <Box alignContent='left' margin={"$10px"}>
-                <Button width={"$25%"} onPress={() => setShowModal(true)} ref={ref}>
-                    <ButtonText>Add</ButtonText>
+            <Box alignContent='center'>
+                <Button width={"$full"} mx={"auto"} mt={"$10"} onPress={() => setShowModal(true)} ref={ref}>
+                    <ButtonText>Add new Item</ButtonText>
                 </Button>
                 <Modal
                     isOpen={showModal}
@@ -131,9 +167,8 @@ const InsertFood = () => {
                         <ModalBody>
                             <FormControl size={"md"} isDisabled={false} isRequired={false}>
                                 <Text>Name</Text>
-
                                 <Input>
-                                    <InputField placeholder='Name' defaultValue='' type='text' onChangeText={value => setData({
+                                    <InputField placeholder='Name' value={formData.Name} type='text' onChangeText={value => setData({
                                         ...formData,
                                         Name: value
                                     })} />
@@ -143,7 +178,7 @@ const InsertFood = () => {
                             <FormControl size={"md"} isDisabled={false} isRequired={false}>
                                 <Text>Description</Text>
                                 <Input>
-                                    <InputField placeholder='Description' defaultValue='' type='text' onChangeText={value => setData({
+                                    <InputField placeholder='Description' value={formData.Description} type='text' onChangeText={value => setData({
                                         ...formData,
                                         Description: value
                                     })} />
@@ -152,10 +187,8 @@ const InsertFood = () => {
                             </FormControl>
                             <FormControl size={"md"} isDisabled={false} isRequired={false}>
                                 <Text>Price</Text>
-
-
                                 <Input>
-                                    <InputField placeholder='Price' defaultValue='' type='number' onChangeText={value => setData({
+                                    <InputField placeholder='Price' value={formData.Price} type='number' onChangeText={value => setData({
                                         ...formData,
                                         Price: value
                                     })} />
@@ -180,56 +213,73 @@ const InsertFood = () => {
 
                             <FormControl size={"md"} isDisabled={false} isRequired={false}>
                                 <Text>Image</Text>
-                                <Button title="Image" onPress={pickImage} />
+                                <Button  onPress={pickImage} />
                             </FormControl>
 
                         </ModalBody>
                         <ModalFooter>
+                            {mode === "register" ? (
+                                <Button
+                                    size="sm"
+                                    action="positive"
+                                    borderWidth="$0"
+                                    onPress={onSubmit}>
+                                    <ButtonText>add</ButtonText>
+                                </Button>
+                            ) : (
+                                <Button
+                                    size="sm"
+                                    action="positive"
+                                    borderWidth="$0"
+                                    onPress={() => { update(formData, Id) }}>
+                                    <ButtonText>update</ButtonText>
+                                </Button>
+                            )}
                             <Button
                                 variant="outline"
                                 size="sm"
                                 action="secondary"
                                 mr="$3"
                                 onPress={() => {
-                                    setShowModal(false)
-                                }}
-                            >
+                                    setShowModal(false), clear()
+                                }}>
                                 <ButtonText>Cancel</ButtonText>
-                            </Button>
-                            <Button
-                                size="sm"
-                                action="positive"
-                                borderWidth="$0"
-                                onPress={onSubmit}
-                            >
-                                <ButtonText>add</ButtonText>
                             </Button>
                         </ModalFooter>
                     </ModalContent>
                 </Modal>
             </Box>
 
-
-            <Box width={"$full"} height={"$full"} flex="1" p={4} overflow='auto'>
+            <Box width={"$full"} height={"$full"} p={4}>
                 {foodData.map((food, index) => (
                     <Card key={index} size="md" variant="filled" m="$3">
-                        <Box flexDirection="row" alignItems="center" justifyContent="space-between">
-                            <Box>
-                                <Heading mb="$1" size="md">
-                                    {food.Name}
-                                </Heading>
-
-                            </Box>
-
-                            <Button onPress={() => onDelete(food.id)} size="xs" backgroundColor='red' width={"$35px"} variant="solid" isDisabled={false} isFocusVisible={false} >
-                                <ButtonText>x</ButtonText>
-                            </Button>
+                        <Image
+                            size="md"
+                            width={"$full"}
+                            alt="login_image"
+                            source={{ uri: `${Img + food.Image}` }}
+                            resizeMode="cover" style={{
+                                alignSelf: "center"
+                            }} />
+                        <Box>
+                            <Heading mb="$1" size="md">
+                                {food.Name}
+                            </Heading>
                         </Box>
+                        <VStack>
+                            <Text size="sm">{food.Description}</Text>
+                            <Text size="sm" fontWeight="$extrabold">Precio: {food.Price}</Text>
+                        </VStack>
+                        <Button onPress={() => onModify(food, food.id)} my={"$5"} ref={ref} backgroundColor='#f59e0b'>
+                            <ButtonText>Modify</ButtonText>
+                        </Button>
+                        <Button onPress={() => onDelete(food.id)} backgroundColor='#dc2626' variant="solid" isDisabled={false} isFocusVisible={false} >
+                            <ButtonText>Delete</ButtonText>
+                        </Button>
                     </Card>
                 ))}
             </Box>
         </Box>
-
     );
 }
 export default InsertFood;

@@ -1,4 +1,4 @@
-import { Box,Image, Divider, VStack, ScrollView, Button, ButtonText, View, Text, AvatarFallbackText, Avatar, Card, Heading } from '@gluestack-ui/themed';
+import { Box, Image, Divider, VStack, ScrollView, Button, ButtonText, View, Text, AvatarFallbackText, Avatar, Card, Heading } from '@gluestack-ui/themed';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'//async
 import { useEffect, useState, useCallback } from 'react';
@@ -110,14 +110,14 @@ const Bagview = () => {
 
     return (
         <Box backgroundColor='white' alignItems="center" mt={10} display="flex" flexDirection="column" height={"$full"} >
-            <Box borderRadius={" 10px 10px 0 0"} height={'40%'} width={'100%'} backgroundColor='#FFA600' p={4} display='inline-block'>
-                <Avatar bgColor='black' size="xl" borderRadius="$full" left={"$5%"} top={"$15%"}>
+            <Box height={'40%'} width={'100%'} backgroundColor='#FFA600' p={4}>
+                <Avatar bgColor='black' size="xl" borderRadius="$full" marginLeft={"$1/3"} marginTop={"$10"}>
                     <AvatarFallbackText>{userData.Name}</AvatarFallbackText>
                 </Avatar>
-                <Text position='absolute' left={"33%"} color='white' fontFamily='Arial' fontSize={"$175%"} top={"$25%"}    >{userData.Name} </Text>
-                <Text position='absolute' left={"33%"} color='white' fontFamily='Arial' fontSize={"$175%"} top={"$37%"}    >{userData.FirstSurname}</Text>
-                <Text position='absolute' left={"33%"} color='white' fontFamily='Arial' fontSize={"$175%"} top={"$49%"}    >{userData.SecondSurname}</Text>
-                <Text position='absolute' left={"$50%"} top={"$80%"} color='white' fontFamily='Arial' fontSize={"$175%"} mb="$1" margin="10" size="sm" style={{ marginLeft: "auto" }}>
+                <Text position='absolute' marginLeft={"$1/3"} color='white' fontFamily='Arial' size='2xl' marginTop={"$1/6"}>{userData.Name} </Text>
+                <Text position='absolute' marginLeft={"$1/3"} color='white' fontFamily='Arial' size='2xl' marginTop={"$1/6"}>{userData.FirstSurname}</Text>
+                <Text position='absolute' marginLeft={"$1/3"} color='white' fontFamily='Arial' size='2xl' marginTop={"$1/6"}>{userData.SecondSurname}</Text>
+                <Text position='absolute' color='white' fontFamily='Arial' size='2xl' mb="$1" marginTop={"$10"} marginLeft={"auto"}>
                     Total: {totalData}.00 $
                 </Text>
             </Box>
@@ -129,8 +129,7 @@ const Bagview = () => {
                             <Image
                                 mb="$6"
                                 h={120}
-                                width="$full"
-                                borderRadius="$md"
+                                width={"$full"}
                                 source={{
                                     uri: `${Img + car.food.Image}`,
                                 }}
@@ -156,7 +155,7 @@ const Bagview = () => {
             </ScrollView>
 
 
-            <Button onPress={onSubmit} action='primary' position="fixed" width="300px" backgroundColor='#FFA600' color='white' top={"80%"} p={2}>
+            <Button onPress={onSubmit} action='primary' position="fixed" width="300px" backgroundColor='#FFA600' color='white' marginTop={"80%"} p={2}>
                 <ButtonText>
                     Order
                 </ButtonText>

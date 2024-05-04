@@ -80,7 +80,7 @@ const RegisterView = () => {
 
 
     return <Box maxWidth="100%" width={"$full"} height="$1/3" borderRadius="$sm">
-        <Image size="md" width={"$full"} height={"$full"} alt="login_image" source={require("../../assets/pantalla_inicio2.png")} resizeMode="cover" style={{
+        <Image size="md" width={"$full"} height={"$full"} alt="login_image" source={require("../../Cafeteria-App/assets/pantalla_inicio2.png")} resizeMode="cover" style={{
             alignSelf: "center"
         }} />
         <Text ml={"$5"} fontWeight='$bold' fontSize={"$2xl"} borderBottomColor='black'>Register</Text>
@@ -101,7 +101,7 @@ const RegisterView = () => {
 
             <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
                 <FormControlLabel>
-                    <FormControlLabelText color="black"  fontSize={"$sm"} fontWeight='$bold'>FirstSurname</FormControlLabelText>
+                    <FormControlLabelText color="black" fontSize={"$sm"} fontWeight='$bold'>FirstSurname</FormControlLabelText>
                 </FormControlLabel>
                 <Input>
                     <InputField type='text' placeholder='FirstSurname' defaultValue='' onChangeText={value => setData({
@@ -115,7 +115,7 @@ const RegisterView = () => {
 
             <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
                 <FormControlLabel>
-                    <FormControlLabelText color="black"  fontSize={"$sm"} fontWeight='$bold'>SecondSurname</FormControlLabelText>
+                    <FormControlLabelText color="black" fontSize={"$sm"} fontWeight='$bold'>SecondSurname</FormControlLabelText>
                 </FormControlLabel>
                 <Input>
                     <InputField type='text' placeholder='SecondSurname' defaultValue='' onChangeText={value => setData({
@@ -129,7 +129,7 @@ const RegisterView = () => {
 
             <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
                 <FormControlLabel>
-                    <FormControlLabelText color="black"  fontSize={"$sm"} fontWeight='$bold'>number control</FormControlLabelText>
+                    <FormControlLabelText color="black" fontSize={"$sm"} fontWeight='$bold'>number control</FormControlLabelText>
                 </FormControlLabel>
                 <Input width={"$full"} borderRadius={"$sm"} mx={"$auto"} marginBottom={"$1"} borderBottomColor={"$black"} borderRadius="$sm">
                     <InputField type='text' defaultValue='' placeholder='Control number'
@@ -145,7 +145,7 @@ const RegisterView = () => {
 
             <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
                 <FormControlLabel>
-                    <FormControlLabelText color="black"  fontSize={"$sm"} fontWeight='$bold'>Phone number</FormControlLabelText>
+                    <FormControlLabelText color="black" fontSize={"$sm"} fontWeight='$bold'>Phone number</FormControlLabelText>
                 </FormControlLabel>
                 <Input width={"$full"} borderRadius={"$sm"} mx={"$auto"} marginBottom={"$1"} borderBottomColor={"$black"} borderRadius="$sm">
 
@@ -162,7 +162,7 @@ const RegisterView = () => {
 
             <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
                 <FormControlLabel>
-                    <FormControlLabelText color="black"  fontSize={"$sm"} fontWeight='$bold'>Email</FormControlLabelText>
+                    <FormControlLabelText color="black" fontSize={"$sm"} fontWeight='$bold'>Email</FormControlLabelText>
                 </FormControlLabel>
                 <Input width={"$full"} borderRadius={"$sm"} mx={"$auto"} marginBottom={"$1"} borderBottomColor={"$black"} borderRadius="$sm">
 
@@ -176,7 +176,7 @@ const RegisterView = () => {
             </FormControl>
             <FormControl isInvalid={false} size={"md"} isDisabled={false} isRequired={false}>
                 <FormControlLabel>
-                    <FormControlLabelText color="black"  fontSize={"$sm"} fontWeight='$bold'>Password</FormControlLabelText>
+                    <FormControlLabelText color="black" fontSize={"$sm"} fontWeight='$bold'>Password</FormControlLabelText>
                 </FormControlLabel>
                 <Input width={"$full"} borderRadius={"$sm"} mx={"$auto"} marginBottom={"$1"} borderBottomColor={"$black"} borderRadius="$sm">
 

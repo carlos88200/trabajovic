@@ -44,7 +44,7 @@ const SearchView = () => {
 
   return (
     <Box backgroundColor='white' height={"$full"} width={"$full"}>
-      <Box marginTop={"$3px"} display='$flex' flexDirection='row' borderRadius={"$10px"} overflowX='scroll' backgroundColor='#FAF7F6'>
+      <Box marginTop={"$3px"} display='$flex' flexDirection='row' overflowX='scroll' backgroundColor='#FAF7F6'>
         {groupData.map((group, index) => (
 
           <Button onPress={() => produc(group.id)} backgroundColor='#FFA600' margin={"$5px"} key={index} size="md" variant="solid" action="primary" isDisabled={false} isFocusVisible={false} >
